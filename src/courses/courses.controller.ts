@@ -1,19 +1,34 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { CoursesService } from './courses.service'
 
 @Controller('courses')
 export class CoursesController {
+  constructor(private readonly courseService: CoursesService) {}
+
   @Get()
   findAll() {
-    return ['aqui é uma lista dos cursos']
+    return this.courseService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `Curso com id: ${id}`
+    console.log('a')
+    return id
+    // return this.courseService.findOne(+id)
   }
 
   @Post()
-  creat(@Body() body: { id: string; name: string }) {
-    return body
+  create(@Body() body) {
+    return this.courseService.create(body)
+  }
+
+  @Put(':id')
+  update(@Param('id') id: number, @Body() body) {
+    return this.courseService.update(id, body)
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.courseService.remove(id)
   }
 }
