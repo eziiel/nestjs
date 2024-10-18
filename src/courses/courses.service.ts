@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { Course } from './courses.entity'
 
 @Injectable()
@@ -27,6 +32,8 @@ export class CoursesService {
 
   create(createCourseDTO: any) {
     this.courses.push(createCourseDTO)
+
+    return new HttpException('Created', HttpStatus.CREATED)
   }
 
   update(id: number, updateCourseDTO: any) {
