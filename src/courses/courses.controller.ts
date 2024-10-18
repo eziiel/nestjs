@@ -12,9 +12,7 @@ export class CoursesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log('a')
-    return id
-    // return this.courseService.findOne(+id)
+    return this.courseService.findOne(+id)
   }
 
   @Post()
