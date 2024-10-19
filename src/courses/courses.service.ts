@@ -1,18 +1,23 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import { Course } from './courses.entity'
 import { CreateCourseDTO } from './dto/create-course.dto'
 import { UpdateCourseDTO } from './dto/update-course.dto'
 
 @Injectable()
 export class CoursesService {
-  private courses: Course[] = [
+  private courses = [
     {
       id: 1,
       name: 'NestJs',
       description: 'Curso back end de NestJs',
       tags: ['nestjs', 'node', 'Typescript'],
     },
-  ]
+  ] as Course[]
 
   findAll() {
     return this.courses
@@ -28,9 +33,9 @@ export class CoursesService {
   }
 
   create(createCourseDTO: CreateCourseDTO) {
-    this.courses.push(createCourseDTO)
+    this.courses.push(createCourseDTO as any)
 
-    return createCourseDTO
+    return new HttpException('Created', HttpStatus.CREATED)
   }
 
   update(id: number, updateCourseDTO: UpdateCourseDTO) {
@@ -39,7 +44,7 @@ export class CoursesService {
     if (existCourse) {
       const index = this.courses.findIndex((course) => course.id === id)
       this.courses[index] = {
-        id,
+        id: this.courses[index].id,
         ...updateCourseDTO,
       }
     }
